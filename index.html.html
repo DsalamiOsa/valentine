@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="theme-color" content="#93c5fd" />
+
+<title>Important Question for Summer 💙</title>
+<style>
+  :root{
+    --blue:#2563eb;
+    --blue2:#93c5fd;
+    --blue3:#dbeafe;
+    --ink:#0f172a;
+    --card:#ffffff;
+  }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: linear-gradient(135deg, var(--blue2), var(--blue3));
+    overflow:auto;
+    position:relative;
+  }
+
+  /* animated gradient sheen */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:-40%;
+    background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.35), transparent 45%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.25), transparent 48%);
+    animation: sheen 12s ease-in-out infinite;
+    z-index:0;
+    pointer-events:none;
+  }
+  @keyframes sheen{
+    0%,100%{ transform: translate(0,0) rotate(0deg); }
+    50%{ transform: translate(4%, -3%) rotate(6deg); }
+  }
+
+  /* cozy background blobs */
+  .blob{
+    position:fixed;
+    width:420px;
+    height:420px;
+    border-radius:999px;
+    filter: blur(44px);
+    opacity:0.45;
+    z-index:0;
+    pointer-events:none;
+    animation: drift 14s ease-in-out infinite;
+  }
+  .b1{ background:#60a5fa; top:-120px; left:-120px; }
+  .b2{ background:#bfdbfe; bottom:-140px; right:-120px; animation-duration: 18s; }
+  .b3{ background:#3b82f6; top:40%; right:-180px; animation-duration: 20s; opacity:0.25; }
+
+  @keyframes drift{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(30px, -25px) scale(1.08); }
+  }
+
+  /* subtle stars */
+  .sparkles{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(rgba(255,255,255,0.45) 1px, transparent 1px),
+      radial-gradient(rgba(255,255,255,0.25) 1px, transparent 1px);
+    background-size: 42px 42px, 70px 70px;
+    background-position: 0 0, 18px 22px;
+    opacity:0.22;
+  }
+
+  /* floating bubbles */
+  #bubbles{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bubble{
+    position:absolute;
+    bottom:-60px;
+    width:22px;
+    height:22px;
+    border-radius:999px;
+    background: rgba(255,255,255,0.28);
+    border: 1px solid rgba(255,255,255,0.25);
+    filter: blur(0.2px);
+    animation: bubbleUp linear forwards;
+    box-shadow: 0 12px 30px rgba(37,99,235,0.10);
+  }
+  @keyframes bubbleUp{
+    0%{ transform: translateY(0) translateX(0) scale(0.9); opacity:0; }
+    10%{ opacity:0.7; }
+    100%{ transform: translateY(-120vh) translateX(var(--drift)) scale(1.35); opacity:0; }
+  }
+
+  /* bottom wave */
+  .wave{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:-2px;
+    height:140px;
+    z-index:1;
+    pointer-events:none;
+    opacity:0.26;
+  }
+  .wave svg{
+    width:200%;
+    height:100%;
+    animation: waveMove 10s linear infinite;
+  }
+  @keyframes waveMove{
+    0%{ transform: translateX(0); }
+    100%{ transform: translateX(-50%); }
+  }
+
+  /* Floating hearts layer */
+  #heartsLayer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:2;
+  }
+  .heart{
+    position:absolute;
+    bottom:-40px;
+    font-size:18px;
+    opacity:0.85;
+    filter: drop-shadow(0 8px 12px rgba(37,99,235,0.20));
+    animation: floatUp linear forwards;
+    will-change: transform, opacity;
+  }
+  @keyframes floatUp{
+    0%{ transform: translateY(0) translateX(0) scale(0.9) rotate(0deg); opacity:0; }
+    10%{ opacity:0.9; }
+    100%{ transform: translateY(-120vh) translateX(var(--drift)) scale(1.2) rotate(var(--spin)); opacity:0; }
+  }
+
+  /* Confetti */
+  #confetti{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:60;
+    overflow:hidden;
+  }
+  .conf{
+    position:absolute;
+    top:-16px;
+    width:10px;
+    height:14px;
+    border-radius:3px;
+    opacity:0.9;
+    animation: confFall linear forwards;
+    box-shadow: 0 12px 20px rgba(15,23,42,0.10);
+  }
+  @keyframes confFall{
+    0%{ transform: translateY(0) rotate(0deg); }
+    100%{ transform: translateY(110vh) rotate(var(--spin)); }
+  }
+
+  /* top UI (progress + music) */
+  .topbar{
+    position:fixed;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(92%, 560px);
+    z-index:10;
+    display:flex;
+    gap:0.6rem;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .progressWrap{
+    flex:1;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(37,99,235,0.14);
+    border-radius: 999px;
+    padding: 0.35rem 0.45rem;
+    box-shadow: 0 16px 40px rgba(15,23,42,0.10);
+    backdrop-filter: blur(10px);
+  }
+  .progressBar{
+    height:10px;
+    border-radius:999px;
+    background: rgba(37,99,235,0.15);
+    overflow:hidden;
+  }
+  .progressFill{
+    height:100%;
+    width:0%;
+    border-radius:999px;
+    background: linear-gradient(90deg, #2563eb, #60a5fa);
+    transition: width 0.35s ease;
+  }
+  .progressText{
+    font-size:0.78rem;
+    color:#0f172a;
+    font-weight:900;
+    margin-top:0.25rem;
+    opacity:0.85;
+  }
+  .chipBtn{
+    border:none;
+    padding:0.55rem 0.85rem;
+    border-radius:999px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(37,99,235,0.14);
+    box-shadow: 0 16px 40px rgba(15,23,42,0.10);
+    cursor:pointer;
+    font-weight:900;
+    color:#0f172a;
+    backdrop-filter: blur(10px);
+    transition: transform 0.15s ease;
+    white-space:nowrap;
+  }
+  .chipBtn:hover{ transform: translateY(-1px); }
+  .chipBtn small{ opacity:0.7; font-weight:800; }
+
+  /* card */
+  .card{
+    position:relative;
+    z-index:6;
+    background: var(--card);
+    padding:2.2rem 1.85rem 2.4rem;
+    border-radius:30px;
+    text-align:center;
+    max-width:560px;
+    width:min(92%, 560px);
+    box-shadow:0 28px 70px rgba(15,23,42,0.20);
+    border: 1px solid rgba(37,99,235,0.12);
+    max-height: 86vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .card::-webkit-scrollbar{ width: 10px; }
+  .card::-webkit-scrollbar-thumb{
+    background: rgba(37,99,235,0.22);
+    border-radius: 999px;
+  }
+
+  .hidden{ display:none; }
+
+  h1{
+    color:var(--blue);
+    margin:0 0 0.6rem;
+    font-size:1.95rem;
+    letter-spacing:-0.02em;
+  }
+  p{
+    color:#334155;
+    line-height:1.55;
+    margin:0.35rem 0;
+  }
+  .subtitle{
+    font-size:0.98rem;
+    color:#475569;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:0.45rem;
+    padding:0.35rem 0.75rem;
+    border-radius:999px;
+    background: rgba(37,99,235,0.10);
+    color:var(--blue);
+    font-weight:900;
+    font-size:0.9rem;
+    margin-bottom:0.85rem;
+  }
+
+  .gif{
+    width: min(100%, 360px);
+    border-radius:18px;
+    margin: 0.9rem auto 0.2rem;
+    display:block;
+    border: 1px solid rgba(37,99,235,0.14);
+    box-shadow: 0 16px 34px rgba(37,99,235,0.10);
+  }
+
+  .btnRow{
+    display:flex;
+    gap:0.65rem;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:1.1rem;
+  }
+
+  button.big{
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
+
+    border:none;
+    padding:0.88rem 1.6rem;
+    font-size:1rem;
+    border-radius:999px;
+    cursor:pointer;
+    background:var(--blue);
+    color:white;
+    margin:0.12rem;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    box-shadow: 0 10px 22px rgba(37,99,235,0.22);
+    position:relative;
+  }
+  button.big:hover{
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 14px 28px rgba(37,99,235,0.28);
+    filter: brightness(1.03);
+  }
+  button.big:active{ transform: translateY(0px) scale(0.99); }
+
+  /* Fun moving buttons */
+  .wiggle{ animation: wiggle 2.2s ease-in-out infinite; }
+  @keyframes wiggle{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-2px) } }
+  .wiggle2{ animation: wiggle2 2.6s ease-in-out infinite; }
+  @keyframes wiggle2{ 0%,100%{ transform: translateY(0) rotate(0deg) } 50%{ transform: translateY(-2px) rotate(-0.4deg) } }
+
+  .soft{
+    background:#e5e7eb !important;
+    color:#0f172a !important;
+    box-shadow:none !important;
+  }
+
+  .quizBox{
+    margin-top:0.9rem;
+    padding:0.95rem 0.95rem;
+    border-radius:18px;
+    background: rgba(147,197,253,0.22);
+    border: 1px solid rgba(37,99,235,0.12);
+    color:#0f172a;
+  }
+
+  .tiny{
+    font-size:0.92rem;
+    color:#64748b;
+    margin-top:0.55rem;
+  }
+
+  img.photo{
+    width:100%;
+    border-radius:22px;
+    margin-top:1.15rem;
+    border: 1px solid rgba(37,99,235,0.18);
+    box-shadow: 0 18px 46px rgba(15,23,42,0.12);
+  }
+
+  .final{
+    font-size:1.16rem;
+    color:var(--blue);
+    margin-top:0.75rem;
+    font-weight:900;
+  }
+
+  /* Loading overlay between steps */
+  #loader{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: rgba(15,23,42,0.22);
+    backdrop-filter: blur(6px);
+    z-index:50;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.18s ease;
+  }
+  #loader.show{ opacity:1; pointer-events:auto; }
+  .loaderCard{
+    width:min(92%, 440px);
+    background:white;
+    border-radius:22px;
+    padding:1.35rem 1.2rem 1.2rem;
+    box-shadow:0 22px 55px rgba(0,0,0,0.22);
+    text-align:center;
+    border: 1px solid rgba(37,99,235,0.12);
+  }
+  .spinner{
+    width:44px; height:44px;
+    border-radius:999px;
+    border: 4px solid rgba(37,99,235,0.18);
+    border-top-color: var(--blue);
+    margin: 0.3rem auto 0.8rem;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+  #loaderMsg{ color:#334155; font-weight:900; }
+  #loaderSub{ margin-top:0.35rem; color:#64748b; font-size:0.92rem; }
+
+  /* Mini game 1: catch the heart */
+  #catchArea{
+    margin-top:1rem;
+    height:170px;
+    border-radius:18px;
+    border: 1px dashed rgba(37,99,235,0.35);
+    background: rgba(219,234,254,0.55);
+    position:relative;
+    overflow:hidden;
+  }
+  #movingHeart{
+    position:absolute;
+    left:30%;
+    top:40%;
+    font-size:28px;
+    cursor:pointer;
+    user-select:none;
+    transition: left 0.28s ease, top 0.28s ease, transform 0.15s ease;
+  }
+  #movingHeart:hover{ transform: scale(1.08); }
+  #catchCount{ margin-top:0.65rem; font-weight:900; color: var(--blue); }
+
+  /* Mini game 2: find the hidden heart */
+  .boxes{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:0.65rem;
+    margin-top:1rem;
+  }
+  .boxBtn{
+    border-radius:18px;
+    padding:1rem 0.8rem;
+    min-height:86px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    background: rgba(37,99,235,0.08);
+    color: var(--ink);
+    border: 1px solid rgba(37,99,235,0.14);
+    box-shadow:none;
+    cursor:pointer;
+    transition: transform 0.14s ease, box-shadow 0.14s ease;
+  }
+  .boxBtn:hover{
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 14px 28px rgba(15,23,42,0.08);
+  }
+  .boxEmoji{ font-size:26px; margin-bottom:0.25rem; }
+  .hint{
+    margin-top:0.9rem;
+    font-weight:900;
+    color:#0f172a;
+  }
+
+  /* Mini game 3: memory match */
+  #memoryGrid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:0.6rem;
+    margin-top:1rem;
+  }
+  .cardTile{
+    height:74px;
+    border-radius:18px;
+    border: 1px solid rgba(37,99,235,0.14);
+    background: rgba(37,99,235,0.08);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:900;
+    user-select:none;
+    box-shadow:none;
+    transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
+  }
+  .cardTile:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(15,23,42,0.08);
+  }
+  .cardTile.revealed{ background: rgba(147,197,253,0.25); }
+  .cardTile.matched{
+    background: rgba(37,99,235,0.14);
+    border-color: rgba(37,99,235,0.25);
+  }
+  .memoryStatus{
+    margin-top:0.7rem;
+    font-weight:900;
+    color: var(--blue);
+  }
+
+  /* Mini game 4: heart taps */
+  #tapArea{
+    margin-top:1rem;
+    height:190px;
+    border-radius:18px;
+    border: 1px dashed rgba(37,99,235,0.35);
+    background: rgba(219,234,254,0.55);
+    position:relative;
+    overflow:hidden;
+  }
+  .tapHeart{
+    position:absolute;
+    font-size:26px;
+    cursor:pointer;
+    user-select:none;
+    transition: transform 0.12s ease;
+  }
+  .tapHeart:active{ transform: scale(0.92); }
+  .timerRow{
+    display:flex;
+    justify-content:space-between;
+    margin-top:0.7rem;
+    font-weight:900;
+    color:#0f172a;
+  }
+
+  /* Mini game 5: spin the wheel */
+  .wheelWrap{
+    margin-top:1rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.7rem;
+  }
+  .wheel{
+    width:260px;
+    height:260px;
+    border-radius:999px;
+    border: 10px solid rgba(37,99,235,0.18);
+    background: conic-gradient(
+      rgba(37,99,235,0.22) 0 60deg,
+      rgba(147,197,253,0.30) 60deg 120deg,
+      rgba(37,99,235,0.16) 120deg 180deg,
+      rgba(147,197,253,0.26) 180deg 240deg,
+      rgba(37,99,235,0.20) 240deg 300deg,
+      rgba(147,197,253,0.22) 300deg 360deg
+    );
+    box-shadow: 0 22px 55px rgba(15,23,42,0.10);
+    position:relative;
+    overflow:hidden;
+    transition: transform 3.2s cubic-bezier(.2,.9,.2,1);
+  }
+  .wheel::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 45%);
+    pointer-events:none;
+  }
+  .wheelCenter{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    width:76px;
+    height:76px;
+    border-radius:999px;
+    background: rgba(255,255,255,0.78);
+    border: 1px solid rgba(37,99,235,0.16);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    color:#0f172a;
+    box-shadow: 0 16px 36px rgba(15,23,42,0.10);
+  }
+  .pointer{
+    width:0; height:0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 18px solid rgba(37,99,235,0.55);
+    margin-top:-6px;
+    filter: drop-shadow(0 10px 16px rgba(15,23,42,0.12));
+  }
+  .wheelText{
+    font-weight:900;
+    color:#0f172a;
+  }
+
+  /* Mini game 6: compliment machine */
+  .complimentBox{
+    margin-top:1rem;
+    border-radius:18px;
+    border: 1px solid rgba(37,99,235,0.12);
+    background: rgba(219,234,254,0.55);
+    padding:1rem 1rem;
+    min-height:84px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    color:#0f172a;
+  }
+
+  /* music element */
+  audio{ display:none; }
+</style>
+</head>
+<body>
+<!-- Background music (local file) -->
+<audio id="bgMusic" preload="auto" loop>
+  <source src="mii-maker.mp3.mp3" type="audio/mpeg">
+</audio>
+
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<div class="sparkles"></div>
+<div id="bubbles" aria-hidden="true"></div>
+
+<div class="wave" aria-hidden="true">
+  <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <path d="M0,40 C150,120 350,0 600,60 C850,120 950,30 1200,70 L1200,120 L0,120 Z" fill="rgba(37,99,235,0.25)"></path>
+    <path d="M0,70 C150,10 350,120 600,55 C850,-10 950,110 1200,45 L1200,120 L0,120 Z" fill="rgba(147,197,253,0.28)"></path>
+  </svg>
+</div>
+
+<div class="topbar">
+  <div class="progressWrap">
+    <div class="progressBar"><div id="progressFill" class="progressFill"></div></div>
+    <div id="progressText" class="progressText">Step 1 of 13</div>
+  </div>
+  <button id="musicBtn" class="chipBtn" type="button">Music: <small>tap to play</small></button>
+  <button id="sfxBtn" class="chipBtn" type="button">SFX: <small>ON</small></button>
+</div>
+
+<div id="confetti" aria-hidden="true"></div>
+<div id="heartsLayer" aria-hidden="true"></div>
+
+<div id="loader" aria-hidden="true">
+  <div class="loaderCard">
+    <div class="spinner"></div>
+    <div id="loaderMsg">Loading…</div>
+    <div id="loaderSub">Please remain cute and patient 💙</div>
+  </div>
+</div>
+
+<div class="card">
+  <!-- STEP 1 -->
+  <div id="step1">
+    <div class="pill">✨ Osa Presents</div>
+    <h1>Summer aka Summer Ummer AKA mi amor 💙</h1>
+    <p class="subtitle">I have something that I need to ask you.</p>
+    <img class="gif" alt="Snoopy dancing" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTh5OThkMzJjZ3FocWt4eGN1OGo0ZzdsN2Fqd3BkNDZ1NW41eXpvNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Uj22yKy0bCW67SjErS/giphy.gif" />
+    <div class="btnRow">
+      <button class="big wiggle" onclick="transitionTo(2)">Okay 👀</button>
+    </div>
+    <p class="tiny">Warning: you’re about to be romanced (consensually ofc).</p>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="step2" class="hidden">
+    <div class="pill">🧾 Important Disclaimer</div>
+    <h1>Quick disclaimer</h1>
+    <p>This experience contains sarcasm, romance, and a LOOOOVE.</p>
+    <img class="gif" alt="Snoopy hug" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3lqNm81eXA0bDU3NnZkenppMTBycjY3NjVid2FmMm9mY2NsaXJvZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/z90k1zesHbS9y/giphy.gif" />
+    <p class="tiny">Side effects may include smiling and saying “aww stop” (please don’t stop).</p>
+    <div class="btnRow">
+      <button class="big wiggle2" onclick="transitionTo(3)">Proceed 😌</button>
+      <button class="big soft" onclick="transitionTo(3)">COMIN THRU 💪</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="step3" class="hidden">
+    <div class="pill">📝 Warm-Up Question</div>
+    <h1>Pop quiz</h1>
+    <p><strong>Who is the best boyfriend?</strong></p>
+    <img class="gif" alt="Snoopy groove" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNm91ZGRtODh2d2VlYzBlN2l4aXEyNG45ODdhZmJ6YThnd3k3MG9yciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/apcgNpbS5Nk5O/giphy.gif" />
+    <div class="btnRow">
+      <button class="big wiggle" onclick="transitionTo(4)">David 😏</button>
+      <button class="big wiggle2" onclick="transitionTo(4)">Osa 😌</button>
+      <button class="big" onclick="transitionTo(4)">Osa Mimosa💙</button>
+    </div>
+    <p class="tiny">(There are no incorrect answers. Only correct ones. Like you choosing me.)</p>
+  </div>
+
+  <!-- STEP 4 -->
+  <div id="step4" class="hidden">
+    <div class="pill">🧠 Very Scientific</div>
+    <h1>Compatibility scan</h1>
+    <div class="quizBox">
+      <p><strong>Who is the cutest woman to grace this planet</strong></p>
+      <p style="margin:0.25rem 0 0; color:#475569;">(Choose carefully. I will judge you lovingly.)</p>
+    </div>
+    <div class="btnRow">
+      <button class="big" onclick="transitionTo(5)">YOU 🫵🏿</button>
+      <button class="big" onclick="transitionTo(5)">Summer Ummer ❤️💙 </button>
+      <button class="big wiggle2" onclick="transitionTo(5)">Summer 💙</button>
+    </div>
+    <p class="tiny">If you picked “Summer Ummer ❤️💙” you are legally correct.</p>
+  </div>
+
+  <!-- STEP 5 -->
+  <div id="step5" class="hidden">
+    <div class="pill">😌 Final Checks</div>
+    <h1>One more thing…</h1>
+    <p><strong>How locked in are we?</strong></p>
+    <div class="btnRow">
+      <button class="big" onclick="transitionTo(6)">Normal amount 😇</button>
+      <button class="big wiggle" onclick="transitionTo(6)">A alot 😌</button>
+      <button class="big wiggle2" onclick="transitionTo(6)">LOCKED IN 💙</button>
+    </div>
+    <p class="tiny">Correct answer: Were all the way locked in!!!.</p>
+  </div>
+
+  <!-- STEP 6 -->
+  <div id="step6" class="hidden">
+    <div class="pill">🤝 Negotiations</div>
+    <h1>Terms & conditions</h1>
+    <div class="quizBox">
+      <p><strong>By proceeding you agree to:</strong></p>
+      <p style="margin:0.25rem 0 0; color:#475569;">Unlimited cuddles • Random forehead kisses • Me smacking your butt (just cause 
+😏)</p>
+    </div>
+    <div class="btnRow">
+      <button class="big wiggle" onclick="transitionTo(7)">I accept 😌</button>
+      <button class="big" onclick="transitionTo(7)">Im LOCKED</button>
+    </div>
+    <p class="tiny">Don’t worry, the contract is written in love and sarcasm.</p>
+  </div>
+
+  <!-- STEP 7 (game 1) -->
+  <div id="step7" class="hidden">
+    <div class="pill">🎮 Mini Game #1</div>
+    <h1>Catch the heart 💙</h1>
+    <p>Tap the moving heart <strong>3 times</strong> to unlock the next step.</p>
+    <div id="catchArea" aria-label="Catch the heart game">
+      <div id="movingHeart" title="catch me">💙</div>
+    </div>
+    <div id="catchCount">Caught: 0 / 3</div>
+    <div class="btnRow" style="margin-top:1rem;">
+      <button id="unlockBtn" class="big soft" disabled title="Catch 3 hearts first">Locked 🔒</button>
+    </div>
+    <p class="tiny">If this is hard, remember: you caught me. So you’re good.</p>
+  </div>
+
+  <!-- STEP 8 (game 2) -->
+  <div id="step8" class="hidden">
+    <div class="pill">🎁 Mini Game #2</div>
+    <h1>Find the hidden heart</h1>
+    <p>One of these gift boxes is hiding the heart. Choose wisely… 😌</p>
+    <div class="boxes">
+      <button class="boxBtn" onclick="pickBox(0)"><div class="boxEmoji">🎁</div>Left</button>
+      <button class="boxBtn" onclick="pickBox(1)"><div class="boxEmoji">🎁</div>Middle</button>
+      <button class="boxBtn" onclick="pickBox(2)"><div class="boxEmoji">🎁</div>Right</button>
+    </div>
+    <div id="boxHint" class="hint">Hint: it’s definitely not the one you think it is.</div>
+    <div class="btnRow" style="margin-top:1rem;">
+      <button id="boxUnlock" class="big soft" disabled>Locked 🔒</button>
+    </div>
+    <p class="tiny">If you miss, I will laugh at you.</p>
+  </div>
+
+  <!-- STEP 9 (game 3: memory) -->
+  <div id="step9" class="hidden">
+    <div class="pill">🧠 Mini Game #3</div>
+    <h1>Memory match (Summer edition)</h1>
+    <p>Match all the pairs to unlock the next step.</p>
+    <div id="memoryGrid" aria-label="Memory matching game"></div>
+    <div id="memoryStatus" class="memoryStatus">Matched: 0 / 4</div>
+    <div class="btnRow" style="margin-top:1rem;">
+      <button id="memoryUnlock" class="big soft" disabled>Locked 🔒</button>
+    </div>
+    <p class="tiny">Pairs: ☀️ 🏖️ ⭐ 🍦 (aka “Summer energy”).</p>
+  </div>
+
+  <!-- STEP 10 (game 4: tap hearts) -->
+  <div id="step10" class="hidden">
+    <div class="pill">💥 Mini Game #4</div>
+    <h1>Heart tap frenzy</h1>
+    <p>Tap <strong>8 hearts</strong> before the timer hits 0.</p>
+    <div id="tapArea" aria-label="Tap hearts game"></div>
+    <div class="timerRow">
+      <div>Hearts: <span id="tapScore">0</span> / 8</div>
+      <div>Time: <span id="tapTime">12</span>s</div>
+    </div>
+    <div class="btnRow" style="margin-top:1rem;">
+      <button id="tapUnlock" class="big soft" disabled>Locked 🔒</button>
+    </div>
+    <p class="tiny">You can do it. I believe in you. (I also made it easy.)</p>
+  </div>
+
+  <!-- STEP 11 (game 5: compliment machine) -->
+  <div id="step11" class="hidden"> class="hidden">
+    <div class="pill">🧸 Mini Game #5</div>
+    <h1>Compliment machine</h1>
+    <p class="subtitle">(Now with more compliments because you deserve unlimited.)</p>
+    <p>Press the button 3 times to generate my love for you. (This shi only spits facts.)</p>
+    <div id="complimentBox" class="complimentBox">Press the button, mi amor 💙</div>
+    <div class="btnRow">
+      <button id="complimentBtn" class="big wiggle2">Generate 💙</button>
+    </div>
+    <div class="btnRow">
+      <button id="complimentUnlock" class="big soft" disabled>Locked 🔒</button>
+    </div>
+    <p class="tiny">Warning: May cause unintentional love sickness.</p>
+  </div>
+
+  <!-- STEP 12 (the ask) -->
+  <div id="step12" class="hidden">
+    <div class="pill">💘 Moment of Truth</div>
+    <h1>Okay Summer…</h1>
+    <p class="subtitle">Will you be my Valentine? 💙</p>
+    <img class="gif" alt="Snoopy happy" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaW55dzUxZ29nY2c0aXZmaDd0a2lxYWFxenFyaDV2bWVqbjB2aHRhZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BrRezbcAuzfkA/giphy.gif" />
+    <div class="btnRow">
+      <button class="big wiggle" onclick="acceptYes()">Yes 💙</button>
+      <button class="big wiggle2" onclick="acceptYes()">Definitely 💙</button>
+      <button class="big" onclick="acceptYes()">Absolutely 💙</button>
+    </div>
+    <p class="tiny">Choosing any of these will result in me being insufferably happy.</p>
+  </div>
+
+  <!-- STEP 13 (final photo) -->
+  <div id="step13" class="hidden">
+    <div class="pill">✅ Correct Answer Detected</div>
+    <h1>Was there ever any doubt?🥰</h1>
+    <p class="final">
+      I already knew the answer…<br>
+      I just wanted to ask you in a way that matches how special you are.
+    </p>
+    <div class="quizBox" style="margin-top:1rem;">
+      <p style="margin:0; font-weight:900;">Final score:</p>
+      <p style="margin:0.35rem 0 0; color:#334155;">Cutest couple: <strong>100/10</strong> 💙</p>
+    </div>
+    <div class="btnRow" style="margin-top:0.8rem;">
+      <button class="big soft" onclick="burstHearts()">Add more hearts 💙</button>
+      <button class="big" onclick="confettiBurst()">Confetti 😌</button>
+    </div>
+    <img class="photo" src="us.jpg" alt="Us together" />
+    <p class="final"Can't wait to spend Valentines Day with you!💙</p>
+    <p class="tiny">PS: you’re stuck with me (respectfully and consensually ofc).</p>
+  </div>
+</div>
+
+<script>
+  /* --- Background bubbles --- */
+  const bubbles = document.getElementById('bubbles');
+  function spawnBubble(){
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = 10 + Math.random()*26;
+    const left = Math.random()*100;
+    const dur = 7 + Math.random()*7;
+    const drift = (Math.random()*140 - 70).toFixed(0) + 'px';
+    b.style.width = size + 'px';
+    b.style.height = size + 'px';
+    b.style.left = left + 'vw';
+    b.style.animationDuration = dur + 's';
+    b.style.setProperty('--drift', drift);
+    bubbles.appendChild(b);
+    setTimeout(()=> b.remove(), dur*1000 + 200);
+  }
+  setInterval(spawnBubble, 520);
+  for(let i=0;i<10;i++) setTimeout(spawnBubble, i*140);
+
+
+  // Touch-friendly helper (iPhone/iPad)
+  function bindTap(el, fn){
+    if(!el) return;
+    el.addEventListener('click', fn);
+    el.addEventListener('touchstart', (e)=>{ e.preventDefault(); fn(e); }, {passive:false});
+  }
+
+  /* --- SFX (cute click + chime) --- */
+  let sfxEnabled = true;
+  const sfxBtn = document.getElementById('sfxBtn');
+
+  function playClick(){
+    if(!sfxEnabled) return;
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'triangle';
+      o.frequency.value = 520;
+      g.gain.value = 0.06;
+      o.connect(g); g.connect(ctx.destination);
+      o.start();
+      o.frequency.exponentialRampToValueAtTime(260, ctx.currentTime + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.10);
+      o.stop(ctx.currentTime + 0.11);
+      setTimeout(()=>ctx.close(), 200);
+    }catch(e){}
+  }
+
+  function playWin(){
+    if(!sfxEnabled) return;
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      g.gain.value = 0.055;
+      o.connect(g); g.connect(ctx.destination);
+      o.start();
+      o.frequency.setValueAtTime(659, ctx.currentTime);
+      o.frequency.setValueAtTime(784, ctx.currentTime + 0.09);
+      o.frequency.setValueAtTime(988, ctx.currentTime + 0.18);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
+      o.stop(ctx.currentTime + 0.30);
+      setTimeout(()=>ctx.close(), 350);
+    }catch(e){}
+  }
+
+  sfxBtn.addEventListener('click', ()=>{
+    sfxEnabled = !sfxEnabled;
+    sfxBtn.innerHTML = sfxEnabled ? 'SFX: <small>ON</small>' : 'SFX: <small>OFF</small>';
+    playClick();
+  });
+
+  document.addEventListener('click', (e)=>{
+    if(e.target && e.target.tagName === 'BUTTON'){
+      playClick();
+    }
+  }, true);
+
+  /* --- Music toggle (LOCAL MP3) --- */
+  const musicBtn = document.getElementById('musicBtn');
+  const bgMusic = document.getElementById('bgMusic');
+  let musicOn = false;
+
+  async function tryPlay() {
+    try {
+      bgMusic.volume = 0.55;
+      await bgMusic.play();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function pauseMusic() { try { bgMusic.pause(); } catch (e) {} }
+
+  musicBtn.innerHTML = "Music: <small>tap to play</small>";
+  musicBtn.addEventListener('click', async () => {
+    musicOn = !musicOn;
+    if (musicOn) {
+      const ok = await tryPlay();
+      if (!ok) { musicBtn.innerHTML = "Music: <small>blocked?</small>"; musicOn = false; }
+      else { musicBtn.innerHTML = "Music: <small>ON</small>"; }
+    } else {
+      pauseMusic();
+      musicBtn.innerHTML = "Music: <small>OFF</small>";
+    }
+    playClick();
+  });
+
+  /* Floating hearts */
+  const heartsLayer = document.getElementById('heartsLayer');
+  const heartChars = ['💙','💙','💙','💎','🦋','💫'];
+  function spawnHeart(){
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
+    const left = Math.random() * 100;
+    const size = 14 + Math.random()*18;
+    const duration = 6 + Math.random()*6;
+    const drift = (Math.random()*120 - 60).toFixed(0) + 'px';
+    const spin = (Math.random()*90 - 45).toFixed(0) + 'deg';
+    h.style.left = left + 'vw';
+    h.style.fontSize = size + 'px';
+    h.style.animationDuration = duration + 's';
+    h.style.setProperty('--drift', drift);
+    h.style.setProperty('--spin', spin);
+    heartsLayer.appendChild(h);
+    setTimeout(()=> h.remove(), duration*1000 + 200);
+  }
+  setInterval(spawnHeart, 420);
+  for(let i=0;i<14;i++) setTimeout(spawnHeart, i*110);
+
+  function burstHearts(){
+    for(let i=0;i<18;i++) setTimeout(spawnHeart, i*55);
+    playWin();
+  }
+
+  /* Confetti burst */
+  const confetti = document.getElementById('confetti');
+  function confettiBurst(){
+    for(let i=0;i<120;i++){
+      const c = document.createElement('div');
+      c.className = 'conf';
+      const left = Math.random()*100;
+      const dur = 2.8 + Math.random()*1.7;
+      const spin = (Math.random()*720 - 360).toFixed(0) + 'deg';
+      const w = 6 + Math.random()*10;
+      const h = 10 + Math.random()*16;
+      const colors = ["rgba(37,99,235,0.85)","rgba(147,197,253,0.85)","rgba(255,255,255,0.85)","rgba(59,130,246,0.85)"];
+      c.style.left = left + "vw";
+      c.style.width = w + "px";
+      c.style.height = h + "px";
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = dur + "s";
+      c.style.setProperty('--spin', spin);
+      confetti.appendChild(c);
+      setTimeout(()=> c.remove(), dur*1000 + 200);
+    }
+    playWin();
+  }
+
+  /* Loading screens */
+  const loader = document.getElementById('loader');
+  const loaderMsg = document.getElementById('loaderMsg');
+  const loaderSub = document.getElementById('loaderSub');
+  const loadingMessages = [
+    ["Loading…", "Calibrating my love for you 😌"],
+    ["Loading…", "Installing my love for you"],
+    ["Loading…", "Running romance.exe (no bugs detected)"],
+    ["Loading…", "Calculating how locked in we are…"],
+    ["Loading…", "Asking the universe for more years with you ✨"],
+    ["Loading…", "Verifying you’re the prettiest (confirmed)"],
+    ["Loading…", "Warming up the jokes… please hold 🤝"],
+    ["Loading…", "Applying my heart"],
+    ["Loading…", "Generating Summer.Ummer.EXE"]
+  ];
+  function showLoader(ms=900){
+    const pick = loadingMessages[Math.floor(Math.random()*loadingMessages.length)];
+    loaderMsg.textContent = pick[0];
+    loaderSub.textContent = pick[1];
+    loader.classList.add('show');
+    return new Promise(res => setTimeout(()=>{
+      loader.classList.remove('show');
+      setTimeout(res, 140);
+    }, ms));
+  }
+
+  const TOTAL_STEPS = 13;
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  function updateProgress(step){
+    const pct = Math.round((step / TOTAL_STEPS) * 100);
+    progressFill.style.width = pct + "%";
+    progressText.textContent = `Step ${step} of ${TOTAL_STEPS}`;
+  }
+  updateProgress(1);
+
+  function showOnly(step){
+    for(let i=1;i<=TOTAL_STEPS;i++){
+      const el = document.getElementById('step'+i);
+      if(el) el.classList.add('hidden');
+    }
+    const target = document.getElementById('step'+step);
+    target.classList.remove('hidden');
+    updateProgress(step);
+    const card = document.querySelector('.card');
+    if(card) card.scrollTop = 0;
+
+    // step-specific resets
+    if(step === 10) resetTapStep();
+    if(step === 11) resetComplimentStep();
+  }
+
+  async function transitionTo(step){
+    await showLoader(820 + Math.random()*520);
+    showOnly(step);
+  }
+
+  /* Game 1: Catch the heart */
+  const movingHeart = document.getElementById('movingHeart');
+  const catchCountEl = document.getElementById('catchCount');
+  const unlockBtn = document.getElementById('unlockBtn');
+  const catchArea = document.getElementById('catchArea');
+  let caught = 0;
+
+  function moveHeart(){
+    const pad = 22;
+    const areaRect = catchArea.getBoundingClientRect();
+    const maxX = areaRect.width - pad*2;
+    const maxY = areaRect.height - pad*2;
+    const x = pad + Math.random()*maxX;
+    const y = pad + Math.random()*maxY;
+    movingHeart.style.left = x + 'px';
+    movingHeart.style.top = y + 'px';
+  }
+
+  setInterval(() => {
+    const visible = !document.getElementById('step7').classList.contains('hidden');
+    if(visible) moveHeart();
+  }, 650);
+
+  bindTap(movingHeart, () => {
+    caught = Math.min(3, caught + 1);
+    catchCountEl.textContent = `Caught: ${caught} / 3`;
+    spawnHeart(); spawnHeart();
+    moveHeart();
+    if(caught >= 3){
+      unlockBtn.disabled = false;
+      unlockBtn.classList.remove('soft');
+      unlockBtn.textContent = "Unlocked ✅ (next)";
+      unlockBtn.style.background = "#2563eb";
+      unlockBtn.style.color = "white";
+      unlockBtn.style.boxShadow = "0 10px 22px rgba(37,99,235,0.22)";
+      unlockBtn.onclick = () => transitionTo(8);
+      playWin();
+    }
+  });
+  moveHeart();
+
+  /* Game 2: Find the hidden heart */
+  const boxHint = document.getElementById('boxHint');
+  const boxUnlock = document.getElementById('boxUnlock');
+  let correctBox = Math.floor(Math.random()*3);
+  function reshuffle(){ correctBox = Math.floor(Math.random()*3); }
+
+  function pickBox(idx){
+    if(idx === correctBox){
+      boxHint.textContent = "AYOOO you found it 💙 (skill issue? no. skill.)";
+      burstHearts();
+      boxUnlock.disabled = false;
+      boxUnlock.classList.remove('soft');
+      boxUnlock.textContent = "Proceed ➡️";
+      boxUnlock.style.background = "#2563eb";
+      boxUnlock.style.color = "white";
+      boxUnlock.style.boxShadow = "0 10px 22px rgba(37,99,235,0.22)";
+      boxUnlock.onclick = () => transitionTo(9);
+      playWin();
+    } else {
+      const roasts = [
+        "Nope 😭 try again (I still love you).",
+        "Wrong box 😌 but cute effort.",
+        "Not that one… your confidence is adorable though.",
+        "Close! (Not close.) Try again 😂",
+        "That was a bold choice. Incorrect, but bold."
+      ];
+      boxHint.textContent = roasts[Math.floor(Math.random()*roasts.length)];
+      reshuffle();
+      spawnHeart();
+    }
+  }
+  window.pickBox = pickBox;
+
+  /* Game 3: Memory match */
+  const memoryGrid = document.getElementById('memoryGrid');
+  const memoryStatus = document.getElementById('memoryStatus');
+  const memoryUnlock = document.getElementById('memoryUnlock');
+  const symbolsBase = ['☀️','🏖️','⭐','🍦'];
+  let deck = [];
+  let firstPick = null;
+  let lock = false;
+  let matched = 0;
+
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  function buildDeck(){
+    deck = shuffle([...symbolsBase, ...symbolsBase]).map((sym, idx)=>({
+      id: idx, sym, revealed:false, matched:false
+    }));
+  }
+
+  function renderDeck(){
+    memoryGrid.innerHTML = '';
+    deck.forEach(card=>{
+      const tile = document.createElement('div');
+      tile.className = 'cardTile';
+      tile.setAttribute('role','button');
+      tile.setAttribute('aria-label','memory card');
+      tile.dataset.id = card.id;
+      tile.textContent = (card.matched || card.revealed) ? card.sym : '❔';
+      if(card.revealed) tile.classList.add('revealed');
+      if(card.matched) tile.classList.add('matched');
+      tile.addEventListener('click', ()=> onTile(card.id));
+      memoryGrid.appendChild(tile);
+    });
+    memoryStatus.textContent = `Matched: ${matched} / 4`;
+  }
+
+  function onTile(id){
+    if(lock) return;
+    const card = deck.find(c=>c.id===id);
+    if(!card || card.matched || card.revealed) return;
+
+    card.revealed = true;
+    renderDeck();
+
+    if(!firstPick){ firstPick = card; return; }
+
+    if(firstPick.sym === card.sym){
+      deck.forEach(c=>{
+        if(c.sym === card.sym){
+          c.matched = true; c.revealed = true;
+        }
+      });
+      matched += 1;
+      firstPick = null;
+      spawnHeart(); spawnHeart();
+      playWin();
+      renderDeck();
+
+      if(matched >= 4){
+        memoryUnlock.disabled = false;
+        memoryUnlock.classList.remove('soft');
+        memoryUnlock.textContent = "Unlocked ✅ (next)";
+        memoryUnlock.style.background = "#2563eb";
+        memoryUnlock.style.color = "white";
+        memoryUnlock.style.boxShadow = "0 10px 22px rgba(37,99,235,0.22)";
+        memoryUnlock.onclick = () => transitionTo(10);
+      }
+    } else {
+      lock = true;
+      setTimeout(()=>{
+        card.revealed = false;
+        firstPick.revealed = false;
+        firstPick = null;
+        lock = false;
+        renderDeck();
+      }, 650);
+    }
+  }
+
+  buildDeck();
+  renderDeck();
+
+  /* Game 4: Heart tap frenzy */
+  const tapArea = document.getElementById('tapArea');
+  const tapScoreEl = document.getElementById('tapScore');
+  const tapTimeEl = document.getElementById('tapTime');
+  const tapUnlock = document.getElementById('tapUnlock');
+  let tapScore = 0;
+  let tapTime = 12;
+  let tapTimer = null;
+  let tapRunning = false;
+
+  function spawnTapHeart(){
+    const h = document.createElement('div');
+    h.className = 'tapHeart';
+    h.textContent = '💙';
+    const rect = tapArea.getBoundingClientRect();
+    const pad = 18;
+    const x = pad + Math.random()*(rect.width - pad*2);
+    const y = pad + Math.random()*(rect.height - pad*2);
+    h.style.left = x + 'px';
+    h.style.top = y + 'px';
+    bindTap(h, () => {
+      if(!tapRunning) startTapGame();
+      h.remove();
+      tapScore = Math.min(8, tapScore + 1);
+      tapScoreEl.textContent = tapScore;
+      spawnHeart();
+      if(tapScore >= 8){
+        endTapGame(true);
+      }else{
+        spawnTapHeart();
+      }
+    });
+    tapArea.appendChild(h);
+    setTimeout(()=>{ if(h.isConnected) h.remove(); }, 1600);
+  }
+
+  function startTapGame(){
+    if(tapRunning) return;
+    tapRunning = true;
+    tapTime = 12;
+    tapScore = 0;
+    tapScoreEl.textContent = tapScore;
+    tapTimeEl.textContent = tapTime;
+    tapArea.innerHTML = '';
+    for(let i=0;i<4;i++) spawnTapHeart();
+
+    tapTimer = setInterval(()=>{
+      tapTime -= 1;
+      tapTimeEl.textContent = tapTime;
+      if(tapTime <= 0){
+        endTapGame(false);
+      }else{
+        if(Math.random() < 0.7) spawnTapHeart();
+      }
+    }, 1000);
+  }
+
+  function endTapGame(won){
+    clearInterval(tapTimer);
+    tapTimer = null;
+    tapRunning = false;
+    tapArea.innerHTML = '';
+    if(won){
+      tapUnlock.disabled = false;
+      tapUnlock.classList.remove('soft');
+      tapUnlock.textContent = "Unlocked ✅ (next)";
+      tapUnlock.style.background = "#2563eb";
+      tapUnlock.style.color = "white";
+      tapUnlock.style.boxShadow = "0 10px 22px rgba(37,99,235,0.22)";
+      tapUnlock.onclick = () => transitionTo(11);
+      burstHearts();
+      playWin();
+    }else{
+      tapArea.innerHTML = '<div style="padding:1.1rem;color:#0f172a;font-weight:900;">Time’s up 😭<br><span style="font-weight:700;color:#475569;">You were still cute though. Tap anywhere to try again.</span></div>';
+      tapArea.addEventListener('click', ()=>{
+        tapArea.innerHTML = '';
+        startTapGame();
+      }, { once:true });
+    }
+  }
+
+  function resetTapStep(){
+    tapUnlock.disabled = true;
+    tapUnlock.className = "big soft";
+    tapUnlock.textContent = "Locked 🔒";
+    tapUnlock.removeAttribute('style');
+    tapScore = 0; tapTime = 12; tapRunning = false;
+    tapScoreEl.textContent = "0";
+    tapTimeEl.textContent = "12";
+    tapArea.innerHTML = '';
+    const hint = document.createElement('div');
+    hint.style.position='absolute';
+    hint.style.inset='0';
+    hint.style.display='flex';
+    hint.style.alignItems='center';
+    hint.style.justifyContent='center';
+    hint.style.textAlign='center';
+    hint.style.padding='0 1rem';
+    hint.style.color='#475569';
+    hint.style.fontWeight='900';
+    hint.innerHTML = 'Tap a 💙 to start the timer 😌';
+    tapArea.appendChild(hint);
+    const starter = document.createElement('div');
+    starter.className='tapHeart';
+    starter.textContent='💙';
+    starter.style.left='50%';
+    starter.style.top='60%';
+    starter.style.transform='translate(-50%, -50%)';
+    starter.style.fontSize='34px';
+    bindTap(starter, () => startTapGame());
+    tapArea.appendChild(starter);
+  }
+  resetTapStep();
+
+  
+  /* Game 6: Compliment machine */
+  const complimentBox = document.getElementById('complimentBox');
+  const complimentBtn = document.getElementById('complimentBtn');
+  const complimentUnlock = document.getElementById('complimentUnlock');
+  const compliments = [
+    "Your laugh is my favorite sound. (Yes, even more than this music.)",
+    "I’d pick you in every lifetime. Also in every video game. Especially Mario Kart.",
+    "You make my heart do that annoying cute thing… you know the one.",
+    "You’re the kind of beautiful that makes me forget what I was saying. Constantly.",
+    "I’m proud of you. Like… ridiculously proud.",
+    "Every time you look at me I feel like I won something.",
+    "If being adorable was a sport, you’d be undefeated.",
+    "You’re my favorite place to be.",
+    "You + me = elite duo. Everybody else is just… participating.",
+    "Your energy is comfort + sparkle + a little bit of danger (in a cute way).",
+    "Even your side profile is unfair.",
+    "Thank you for choosing me. I’ll keep choosing you back.",
+    "You’re soft, strong, and somehow both at once. I love that about you.",
+    "My brain goes quiet when you hold my hand. That’s how I know it’s real.",
+    "I love the way you exist. That sounds dramatic because it is.",
+    "You’re my favorite notification.",
+    "Being with you feels like home but prettier.",
+    "You are the plot. The main character. The moment.",
+    "I’d bring you flowers, but you’re already the whole garden.",
+    "Your eyes are dangerous (I get lost).",
+    "You're the reason I believe in cheesy romance. And I hate that I love it.",
+    "I’d still flirt with you even if we were 80. Probably more.",
+    "You’re the cutest person I know and it’s not even close.",
+    "Your hugs should be prescribed by doctors.",
+    "Everything is better when you’re there. Even Mondays."
+  ];
+  let complimentCount = 0;
+  let complimentUnlocked = false;
+
+  function resetComplimentStep(){
+    complimentCount = 0;
+    complimentUnlocked = false;
+    complimentBox.textContent = "Press the button, mi amor 💙";
+    complimentUnlock.disabled = true;
+    complimentUnlock.className = "big soft";
+    complimentUnlock.textContent = "Locked 🔒";
+    complimentUnlock.removeAttribute('style');
+    complimentBtn.disabled = false;
+  }
+
+  complimentBtn.addEventListener('click', ()=>{
+    const pick = compliments[Math.floor(Math.random()*compliments.length)];
+    complimentBox.textContent = pick;
+    spawnHeart(); spawnHeart();
+    complimentCount += 1;
+
+    // After 3 compliments, unlock the next step but keep letting you generate forever
+    if(complimentCount >= 3 && !complimentUnlocked){
+      complimentUnlocked = true;
+      complimentUnlock.disabled = false;
+      complimentUnlock.classList.remove('soft');
+      complimentUnlock.textContent = "Unlocked ✅ (keep generating or next ➡️)";
+      complimentUnlock.style.background = "#2563eb";
+      complimentUnlock.style.color = "white";
+      complimentUnlock.style.boxShadow = "0 10px 22px rgba(37,99,235,0.22)";
+      complimentUnlock.onclick = () => transitionTo(12);
+      playWin();
+    }
+  });
+  resetComplimentStep();
+
+  /* Accept -> confetti + hearts -> final */
+  function acceptYes(){
+    confettiBurst();
+    burstHearts();
+    transitionTo(13);
+  }
+  window.acceptYes = acceptYes;
+
+  // Make sure any direct step jump resets the card scroll + progress already handled.
+</script>
+</body>
+</html>
